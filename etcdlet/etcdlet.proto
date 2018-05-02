@@ -1,0 +1,33 @@
+syntax = "proto3";
+package etcdlet;
+
+service etcdlet {
+    rpc bootstrap(BootstrapSpec) returns (Response){}
+    rpc reconfigure(MemberSpec) returns (Response) {}
+}
+
+
+message BootstrapSpec{
+    string name = 1;
+    string initialAdvertisePeerUrls = 2;
+    string listenPeerUrls = 3;
+    string listenClientUrls = 4;
+    string advertiseClientUrls = 5;
+    string initialClusterToken = 6;
+    string initialCluster = 7;
+    string initialClusterState = 8;
+    string address = 9;
+}
+
+message MemberSpec{
+    string name = 1;
+    string address = 2;
+    string clusterName = 3;
+    string clusterToken = 4;
+    string opertionType = 5;
+}
+
+message Response{
+    string status = 1;
+} 
+
