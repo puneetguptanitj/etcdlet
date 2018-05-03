@@ -122,7 +122,7 @@ func member(s *grpc.Server, address string){
 type server struct {}
 
 func createCmdString( spec *pb.BootstrapSpec)([]string){
-    cmd := fmt.Sprintf("--name %s --initial-advertise-peer-urls %s --listen-peer-urls %s --listen-client-urls %s --advertise-client-urls %s --initial-cluster-token %s --initial-cluster %s --initial-cluster-state %s", spec.Name, spec.InitialAdvertisePeerUrls, spec.ListenPeerUrls, spec.ListenClientUrls, spec.AdvertiseClientUrls, spec.InitialClusterToken, spec.InitialCluster, spec.InitialClusterState)
+    cmd := fmt.Sprintf("run --net=host -v /tmp/inventory:/tmp/inventory -v /data/etcd:/var/etcd/data gcr.io/google_containers/etcd:3.1.13 /usr/local/bin/etcd --name %s --initial-advertise-peer-urls %s --listen-peer-urls %s --listen-client-urls %s --advertise-client-urls %s --initial-cluster-token %s --initial-cluster %s --initial-cluster-state %s", spec.Name, spec.InitialAdvertisePeerUrls, spec.ListenPeerUrls, spec.ListenClientUrls, spec.AdvertiseClientUrls, spec.InitialClusterToken, spec.InitialCluster, spec.InitialClusterState)
     return strings.Fields(cmd)
 }
 
@@ -132,7 +132,7 @@ func (s * server) Bootstrap(ctx context.Context, in *pb.BootstrapSpec) (*pb.Resp
     fmt.Println(string(byteslice))
     args := createCmdString(in)
     fmt.Println(args)
-    if err := exec.Command("etcd", args[0:]...).Start(); err != nil {
+    if err := exec.Command("docker", args[0:]...).Start(); err != nil {
         fmt.Println(err)
     }
     response := new(pb.Response)
