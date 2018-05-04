@@ -28,10 +28,9 @@ func main(){
     }
     defer watcher.Close()
     done := make(chan bool)
-    address := os.Args[1]
     //every node is a member
     s := grpc.NewServer()
-    go member(s, address)
+    go member(s, "0.0.0.0")
     go func(){
         for{
             select{
