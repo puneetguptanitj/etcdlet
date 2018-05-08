@@ -1,4 +1,21 @@
 # install docker
+cat > /etc/yum.repos.d/docker.repo <<EOS
+[dockerrepo]
+name=Docker CE Stable
+baseurl=https://download.docker.com/linux/centos/7/\$basearch/stable
+enabled=1
+gpgcheck=0
+EOS
+yum makecache fast
+
+yum install -y "docker-ce-17.09.1.ce"
+mkdir -p /etc/docker
+echo '{"storage-driver": "devicemapper"}' > /etc/docker/daemon.json
+systemctl enable docker
+systemctl start docker
+mkdir -p /tmp/inventory
+
+#install etcdlet.service
 cat > /etc/systemd/system/etcdlet.service <<EOS
 [Unit]
 Description=Ectdlet
@@ -13,7 +30,7 @@ ExecStopPost=/usr/bin/docker rm etcdlet
 WantedBy=multi-user.target
 EOS
 mkdir -p /tmp/inventory
-docker load  < /home/core/share/etcdlet.tar
+docker load  < /vagrant/etcdlet.tar
 
 systemctl system-reload
 systemctl enable etcdlet.service
