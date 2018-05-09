@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	pb "etcdlet/etcdlet"
+	pb "../proto"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	context "golang.org/x/net/context"
@@ -168,8 +168,8 @@ func addMembers(c *etcdv3.Client, membersAdded map[string]SpecMember){
 	   	if error != nil {
 	   		log.Fatalf("No can do!")
 	   	}
-	   	client := pb.NewEtcdletClient(transport)
-	   	client.Reconfigure(context.Background(), member)
+	   	//client := pb.NewEtcdletClient(transport)
+	   	//client.Reconfigure(context.Background(), member)
 	   	transport.Close()
 	}
 }
