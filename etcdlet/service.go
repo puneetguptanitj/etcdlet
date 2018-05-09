@@ -160,6 +160,18 @@ func runtimeReconfig(membersInSpec []SpecMember){
 func addMembers(c *etcdv3.Client, membersAdded map[string]SpecMember){
 	bytes, _ := json.Marshal(membersAdded)
     log.Println("Members to be added = %s", string(bytes))
+	for _, member := range membersAdded{
+        peerUrls := make([]string, 0)
+	    peerUrls = append(peerUrls, getURL(member.Address, "2380")) 
+	    c.Cluster.MemberAdd(context.Background(), peerUrls)
+	   	transport, error := grpc.Dial(member.Address+":5000", grpc.WithInsecure())
+	   	if error != nil {
+	   		log.Fatalf("No can do!")
+	   	}
+	   	client := pb.NewEtcdletClient(transport)
+	   	client.Reconfigure(context.Background(), member)
+	   	transport.Close()
+	}
 }
 
 func removeMembers(c *etcdv3.Client, membersRemoved map[string]*proto.Member){
@@ -197,7 +209,7 @@ func (s *server) Bootstrap(ctx context.Context, in *pb.BootstrapSpec) (*pb.Respo
 	return response, nil
 }
 
-func (s *server) Reconfigure(ctx context.Context, in *pb.MemberSpec) (*pb.Response, error) {
+func (s *server) Reconfigure(ctx context.Context, in *pb.Reconfigure) (*pb.Response, error) {
 	fmt.Println("Got request to reconfigure")
 	response := new(pb.Response)
 	response.Status = "Success"

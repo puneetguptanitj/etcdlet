@@ -3,11 +3,11 @@ package etcdlet;
 
 service etcdlet {
     rpc bootstrap(BootstrapSpec) returns (Response){}
-    rpc reconfigure(MemberSpec) returns (Response) {}
+    rpc reconfigure(Reconfigure) returns (Response) {}
 }
 
 
-message BootstrapSpec{
+message BootstrapSpec {
     string name = 1;
     string initialAdvertisePeerUrls = 2;
     string listenPeerUrls = 3;
@@ -19,7 +19,7 @@ message BootstrapSpec{
     string address = 9;
 }
 
-message MemberSpec{
+message Reconfigure {
     string name = 1;
     string address = 2;
     string clusterName = 3;
