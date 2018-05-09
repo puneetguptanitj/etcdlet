@@ -2,12 +2,12 @@ syntax = "proto3";
 package etcdlet;
 
 service etcdlet {
-    rpc bootstrap(BootstrapSpec) returns (Response){}
-    rpc reconfigure(Reconfigure) returns (Response) {}
+    rpc addMember(AddDetails) returns (Response){}
+    rpc removeMember(RemoveDetails) returns (Response) {}
 }
 
 
-message BootstrapSpec {
+message AddDetails {
     string name = 1;
     string initialAdvertisePeerUrls = 2;
     string listenPeerUrls = 3;
@@ -19,12 +19,8 @@ message BootstrapSpec {
     string address = 9;
 }
 
-message Reconfigure {
-    string name = 1;
-    string address = 2;
-    string clusterName = 3;
-    string clusterToken = 4;
-    string opertionType = 5;
+message RemoveDetails {
+    uint64 ID = 1;
 }
 
 message Response{

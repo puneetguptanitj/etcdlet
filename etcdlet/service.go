@@ -16,6 +16,7 @@ import (
 	"strings"
 	etcdv3 "github.com/coreos/etcd/clientv3"
 	proto "github.com/coreos/etcd/etcdserver/etcdserverpb"
+	"net/url"
 )
 
 const (
@@ -59,15 +60,15 @@ func getURL(ip string, port string) string {
 	return "http://" + ip + ":" + port
 }
 
-func createBootstrapSpec(members []SpecMember) []*pb.BootstrapSpec{
+func createBootstrapSpec(members []SpecMember) []*pb.AddDetails{
 	initialCluster := ""
 	for _, member := range members {
 		initialCluster += (member.Name + "=" + getURL(member.Address, "2380") + ",")
 	}
 	initialCluster = strings.Trim(initialCluster, ",")
-	specArray := make([]*pb.BootstrapSpec, len(members))
+	specArray := make([]*pb.AddDetails, len(members))
 	for i, member := range members {
-		bootstrapSpec := new(pb.BootstrapSpec)
+		bootstrapSpec := new(pb.AddDetails)
 		bootstrapSpec.Name = member.Name
 		bootstrapSpec.Address = member.Address
 		bootstrapSpec.InitialAdvertisePeerUrls = getURL(member.Address, "2380")
@@ -116,7 +117,7 @@ func leader() {
 	    		log.Fatalf("No can do!")
 	    	}
 	    	client := pb.NewEtcdletClient(transport)
-	    	client.Bootstrap(context.Background(), member)
+	    	client.AddMember(context.Background(), member)
 	    	transport.Close()
 	    }
 	}
@@ -145,11 +146,15 @@ func runtimeReconfig(membersInSpec []SpecMember){
 	for _, member := range response.Members{
         delete(membersAdded, member.Name)
 	}
-	addMembers(c, membersAdded)
+	addMembers(c, membersAdded, membersInSpec)
 
 	membersRemoved := make(map[string]*proto.Member)
 	for _, member := range response.Members {
-		membersRemoved[member.Name] = member 
+		//if a member is just added its name
+		//can be empty
+		if (member.Name != ""){
+	        membersRemoved[member.Name] = member 
+		}
 	}
 	for _, memberInSpec := range membersInSpec {
 		delete(membersRemoved, memberInSpec.Name)
@@ -157,9 +162,13 @@ func runtimeReconfig(membersInSpec []SpecMember){
 	removeMembers(c, membersRemoved)
 }
 
-func addMembers(c *etcdv3.Client, membersAdded map[string]SpecMember){
+func addMembers(c *etcdv3.Client, membersAdded map[string]SpecMember, membersInSpec []SpecMember){
 	bytes, _ := json.Marshal(membersAdded)
     log.Println("Members to be added = %s", string(bytes))
+	initialCluster := ""
+	for _, member := range membersInSpec {
+		initialCluster += (member.Name + "=" + getURL(member.Address, "2380") + ",")
+	}
 	for _, member := range membersAdded{
         peerUrls := make([]string, 0)
 	    peerUrls = append(peerUrls, getURL(member.Address, "2380")) 
@@ -168,8 +177,18 @@ func addMembers(c *etcdv3.Client, membersAdded map[string]SpecMember){
 	   	if error != nil {
 	   		log.Fatalf("No can do!")
 	   	}
-	   	//client := pb.NewEtcdletClient(transport)
-	   	//client.Reconfigure(context.Background(), member)
+		bootstrapSpec := new(pb.AddDetails)
+		bootstrapSpec.Name = member.Name
+		bootstrapSpec.Address = member.Address
+		bootstrapSpec.InitialAdvertisePeerUrls = getURL(member.Address, "2380")
+		bootstrapSpec.ListenPeerUrls = getURL(member.Address, "2380")
+		bootstrapSpec.ListenClientUrls = getURL(member.Address, "2379") + "," + getURL("127.0.0.1", "2379")
+		bootstrapSpec.AdvertiseClientUrls = getURL(member.Address, "2379")
+		bootstrapSpec.InitialClusterToken = "awesome-cluster"
+		bootstrapSpec.InitialCluster = initialCluster
+		bootstrapSpec.InitialClusterState = "existing"
+	   	client := pb.NewEtcdletClient(transport)
+	   	client.AddMember(context.Background(), bootstrapSpec)
 	   	transport.Close()
 	}
 }
@@ -177,10 +196,23 @@ func addMembers(c *etcdv3.Client, membersAdded map[string]SpecMember){
 func removeMembers(c *etcdv3.Client, membersRemoved map[string]*proto.Member){
 	bytes, _ := json.Marshal(membersRemoved)
 	log.Println("Members to be removed = %s" , string(bytes))
+	for _, member := range membersRemoved {
+		c.Cluster.MemberRemove(context.Background(), member.ID)
+		removeDetails := new(pb.RemoveDetails)
+		removeDetails.ID = member.ID
+		parsedUrl, _ := url.Parse(member.PeerURLs[0])
+	   	transport, error := grpc.Dial(parsedUrl.Host + ":5000", grpc.WithInsecure())
+	   	if error != nil {
+	   		log.Fatalf("No can do!")
+	   	}
+	   	client := pb.NewEtcdletClient(transport)
+	   	client.RemoveMember(context.Background(), removeDetails)
+	   	transport.Close()
+	}
 }
 
 func member(s *grpc.Server, address string) {
-	transport, error := net.Listen("tcp", address+":5000")
+	transport, error := net.Listen("tcp", address + ":5000")
 	if error != nil {
 		log.Fatalf("No can do!", error)
 	}
@@ -190,12 +222,12 @@ func member(s *grpc.Server, address string) {
 
 type server struct{}
 
-func createCmdString(spec *pb.BootstrapSpec) []string {
-	cmd := fmt.Sprintf("run --net=host -v /tmp/inventory:/tmp/inventory -v /data/etcd:/var/etcd/data gcr.io/google_containers/etcd:3.1.13 /usr/local/bin/etcd --name %s --initial-advertise-peer-urls %s --listen-peer-urls %s --listen-client-urls %s --advertise-client-urls %s --initial-cluster-token %s --initial-cluster %s --initial-cluster-state %s --data-dir %s", spec.Name, spec.InitialAdvertisePeerUrls, spec.ListenPeerUrls, spec.ListenClientUrls, spec.AdvertiseClientUrls, spec.InitialClusterToken, spec.InitialCluster, spec.InitialClusterState, "/var/etcd/data")
+func createCmdString(spec *pb.AddDetails) []string {
+	cmd := fmt.Sprintf("run --net=host --name etcd -v /tmp/inventory:/tmp/inventory -v /data/etcd:/var/etcd/data gcr.io/google_containers/etcd:3.1.13 /usr/local/bin/etcd --name %s --initial-advertise-peer-urls %s --listen-peer-urls %s --listen-client-urls %s --advertise-client-urls %s --initial-cluster-token %s --initial-cluster %s --initial-cluster-state %s --data-dir %s", spec.Name, spec.InitialAdvertisePeerUrls, spec.ListenPeerUrls, spec.ListenClientUrls, spec.AdvertiseClientUrls, spec.InitialClusterToken, spec.InitialCluster, spec.InitialClusterState, "/var/etcd/data")
 	return strings.Fields(cmd)
 }
 
-func (s *server) Bootstrap(ctx context.Context, in *pb.BootstrapSpec) (*pb.Response, error) {
+func (s *server) AddMember(ctx context.Context, in *pb.AddDetails) (*pb.Response, error) {
 	fmt.Println("Got bootstrap request")
 	byteslice, _ := json.Marshal(in)
 	fmt.Println(string(byteslice))
@@ -209,8 +241,17 @@ func (s *server) Bootstrap(ctx context.Context, in *pb.BootstrapSpec) (*pb.Respo
 	return response, nil
 }
 
-func (s *server) Reconfigure(ctx context.Context, in *pb.Reconfigure) (*pb.Response, error) {
+func (s *server) RemoveMember(ctx context.Context, in *pb.RemoveDetails) (*pb.Response, error) {
 	fmt.Println("Got request to reconfigure")
+	args := [...]string{"stop", "etcd"}
+	if err := exec.Command("docker", args[0:]...).Run(); err != nil {
+		fmt.Println(err)
+	}
+	args = [...]string{"rm", "etcd"}
+	if err := exec.Command("docker", args[0:]...).Run(); err != nil {
+		fmt.Println(err)
+	}
+	os.RemoveAll("/data/etcd/member")
 	response := new(pb.Response)
 	response.Status = "Success"
 	return response, nil

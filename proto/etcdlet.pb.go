@@ -23,7 +23,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type BootstrapSpec struct {
+type AddDetails struct {
 	Name                     string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
 	InitialAdvertisePeerUrls string   `protobuf:"bytes,2,opt,name=initialAdvertisePeerUrls" json:"initialAdvertisePeerUrls,omitempty"`
 	ListenPeerUrls           string   `protobuf:"bytes,3,opt,name=listenPeerUrls" json:"listenPeerUrls,omitempty"`
@@ -38,161 +38,129 @@ type BootstrapSpec struct {
 	XXX_sizecache            int32    `json:"-"`
 }
 
-func (m *BootstrapSpec) Reset()         { *m = BootstrapSpec{} }
-func (m *BootstrapSpec) String() string { return proto.CompactTextString(m) }
-func (*BootstrapSpec) ProtoMessage()    {}
-func (*BootstrapSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptor_etcdlet_32257f32c8f9ba61, []int{0}
+func (m *AddDetails) Reset()         { *m = AddDetails{} }
+func (m *AddDetails) String() string { return proto.CompactTextString(m) }
+func (*AddDetails) ProtoMessage()    {}
+func (*AddDetails) Descriptor() ([]byte, []int) {
+	return fileDescriptor_etcdlet_205acc584ca6bbfb, []int{0}
 }
-func (m *BootstrapSpec) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_BootstrapSpec.Unmarshal(m, b)
+func (m *AddDetails) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AddDetails.Unmarshal(m, b)
 }
-func (m *BootstrapSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_BootstrapSpec.Marshal(b, m, deterministic)
+func (m *AddDetails) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AddDetails.Marshal(b, m, deterministic)
 }
-func (dst *BootstrapSpec) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_BootstrapSpec.Merge(dst, src)
+func (dst *AddDetails) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AddDetails.Merge(dst, src)
 }
-func (m *BootstrapSpec) XXX_Size() int {
-	return xxx_messageInfo_BootstrapSpec.Size(m)
+func (m *AddDetails) XXX_Size() int {
+	return xxx_messageInfo_AddDetails.Size(m)
 }
-func (m *BootstrapSpec) XXX_DiscardUnknown() {
-	xxx_messageInfo_BootstrapSpec.DiscardUnknown(m)
+func (m *AddDetails) XXX_DiscardUnknown() {
+	xxx_messageInfo_AddDetails.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_BootstrapSpec proto.InternalMessageInfo
+var xxx_messageInfo_AddDetails proto.InternalMessageInfo
 
-func (m *BootstrapSpec) GetName() string {
+func (m *AddDetails) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *BootstrapSpec) GetInitialAdvertisePeerUrls() string {
+func (m *AddDetails) GetInitialAdvertisePeerUrls() string {
 	if m != nil {
 		return m.InitialAdvertisePeerUrls
 	}
 	return ""
 }
 
-func (m *BootstrapSpec) GetListenPeerUrls() string {
+func (m *AddDetails) GetListenPeerUrls() string {
 	if m != nil {
 		return m.ListenPeerUrls
 	}
 	return ""
 }
 
-func (m *BootstrapSpec) GetListenClientUrls() string {
+func (m *AddDetails) GetListenClientUrls() string {
 	if m != nil {
 		return m.ListenClientUrls
 	}
 	return ""
 }
 
-func (m *BootstrapSpec) GetAdvertiseClientUrls() string {
+func (m *AddDetails) GetAdvertiseClientUrls() string {
 	if m != nil {
 		return m.AdvertiseClientUrls
 	}
 	return ""
 }
 
-func (m *BootstrapSpec) GetInitialClusterToken() string {
+func (m *AddDetails) GetInitialClusterToken() string {
 	if m != nil {
 		return m.InitialClusterToken
 	}
 	return ""
 }
 
-func (m *BootstrapSpec) GetInitialCluster() string {
+func (m *AddDetails) GetInitialCluster() string {
 	if m != nil {
 		return m.InitialCluster
 	}
 	return ""
 }
 
-func (m *BootstrapSpec) GetInitialClusterState() string {
+func (m *AddDetails) GetInitialClusterState() string {
 	if m != nil {
 		return m.InitialClusterState
 	}
 	return ""
 }
 
-func (m *BootstrapSpec) GetAddress() string {
+func (m *AddDetails) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-type Reconfigure struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	Address              string   `protobuf:"bytes,2,opt,name=address" json:"address,omitempty"`
-	ClusterName          string   `protobuf:"bytes,3,opt,name=clusterName" json:"clusterName,omitempty"`
-	ClusterToken         string   `protobuf:"bytes,4,opt,name=clusterToken" json:"clusterToken,omitempty"`
-	OpertionType         string   `protobuf:"bytes,5,opt,name=opertionType" json:"opertionType,omitempty"`
+type RemoveDetails struct {
+	ID                   uint64   `protobuf:"varint,1,opt,name=ID" json:"ID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Reconfigure) Reset()         { *m = Reconfigure{} }
-func (m *Reconfigure) String() string { return proto.CompactTextString(m) }
-func (*Reconfigure) ProtoMessage()    {}
-func (*Reconfigure) Descriptor() ([]byte, []int) {
-	return fileDescriptor_etcdlet_32257f32c8f9ba61, []int{1}
+func (m *RemoveDetails) Reset()         { *m = RemoveDetails{} }
+func (m *RemoveDetails) String() string { return proto.CompactTextString(m) }
+func (*RemoveDetails) ProtoMessage()    {}
+func (*RemoveDetails) Descriptor() ([]byte, []int) {
+	return fileDescriptor_etcdlet_205acc584ca6bbfb, []int{1}
 }
-func (m *Reconfigure) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Reconfigure.Unmarshal(m, b)
+func (m *RemoveDetails) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RemoveDetails.Unmarshal(m, b)
 }
-func (m *Reconfigure) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Reconfigure.Marshal(b, m, deterministic)
+func (m *RemoveDetails) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RemoveDetails.Marshal(b, m, deterministic)
 }
-func (dst *Reconfigure) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Reconfigure.Merge(dst, src)
+func (dst *RemoveDetails) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RemoveDetails.Merge(dst, src)
 }
-func (m *Reconfigure) XXX_Size() int {
-	return xxx_messageInfo_Reconfigure.Size(m)
+func (m *RemoveDetails) XXX_Size() int {
+	return xxx_messageInfo_RemoveDetails.Size(m)
 }
-func (m *Reconfigure) XXX_DiscardUnknown() {
-	xxx_messageInfo_Reconfigure.DiscardUnknown(m)
+func (m *RemoveDetails) XXX_DiscardUnknown() {
+	xxx_messageInfo_RemoveDetails.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Reconfigure proto.InternalMessageInfo
+var xxx_messageInfo_RemoveDetails proto.InternalMessageInfo
 
-func (m *Reconfigure) GetName() string {
+func (m *RemoveDetails) GetID() uint64 {
 	if m != nil {
-		return m.Name
+		return m.ID
 	}
-	return ""
-}
-
-func (m *Reconfigure) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
-}
-
-func (m *Reconfigure) GetClusterName() string {
-	if m != nil {
-		return m.ClusterName
-	}
-	return ""
-}
-
-func (m *Reconfigure) GetClusterToken() string {
-	if m != nil {
-		return m.ClusterToken
-	}
-	return ""
-}
-
-func (m *Reconfigure) GetOpertionType() string {
-	if m != nil {
-		return m.OpertionType
-	}
-	return ""
+	return 0
 }
 
 type Response struct {
@@ -206,7 +174,7 @@ func (m *Response) Reset()         { *m = Response{} }
 func (m *Response) String() string { return proto.CompactTextString(m) }
 func (*Response) ProtoMessage()    {}
 func (*Response) Descriptor() ([]byte, []int) {
-	return fileDescriptor_etcdlet_32257f32c8f9ba61, []int{2}
+	return fileDescriptor_etcdlet_205acc584ca6bbfb, []int{2}
 }
 func (m *Response) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Response.Unmarshal(m, b)
@@ -234,8 +202,8 @@ func (m *Response) GetStatus() string {
 }
 
 func init() {
-	proto.RegisterType((*BootstrapSpec)(nil), "etcdlet.BootstrapSpec")
-	proto.RegisterType((*Reconfigure)(nil), "etcdlet.Reconfigure")
+	proto.RegisterType((*AddDetails)(nil), "etcdlet.AddDetails")
+	proto.RegisterType((*RemoveDetails)(nil), "etcdlet.RemoveDetails")
 	proto.RegisterType((*Response)(nil), "etcdlet.Response")
 }
 
@@ -250,8 +218,8 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for Etcdlet service
 
 type EtcdletClient interface {
-	Bootstrap(ctx context.Context, in *BootstrapSpec, opts ...grpc.CallOption) (*Response, error)
-	Reconfigure(ctx context.Context, in *Reconfigure, opts ...grpc.CallOption) (*Response, error)
+	AddMember(ctx context.Context, in *AddDetails, opts ...grpc.CallOption) (*Response, error)
+	RemoveMember(ctx context.Context, in *RemoveDetails, opts ...grpc.CallOption) (*Response, error)
 }
 
 type etcdletClient struct {
@@ -262,18 +230,18 @@ func NewEtcdletClient(cc *grpc.ClientConn) EtcdletClient {
 	return &etcdletClient{cc}
 }
 
-func (c *etcdletClient) Bootstrap(ctx context.Context, in *BootstrapSpec, opts ...grpc.CallOption) (*Response, error) {
+func (c *etcdletClient) AddMember(ctx context.Context, in *AddDetails, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := grpc.Invoke(ctx, "/etcdlet.etcdlet/bootstrap", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/etcdlet.etcdlet/addMember", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *etcdletClient) Reconfigure(ctx context.Context, in *Reconfigure, opts ...grpc.CallOption) (*Response, error) {
+func (c *etcdletClient) RemoveMember(ctx context.Context, in *RemoveDetails, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := grpc.Invoke(ctx, "/etcdlet.etcdlet/reconfigure", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/etcdlet.etcdlet/removeMember", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -283,46 +251,46 @@ func (c *etcdletClient) Reconfigure(ctx context.Context, in *Reconfigure, opts .
 // Server API for Etcdlet service
 
 type EtcdletServer interface {
-	Bootstrap(context.Context, *BootstrapSpec) (*Response, error)
-	Reconfigure(context.Context, *Reconfigure) (*Response, error)
+	AddMember(context.Context, *AddDetails) (*Response, error)
+	RemoveMember(context.Context, *RemoveDetails) (*Response, error)
 }
 
 func RegisterEtcdletServer(s *grpc.Server, srv EtcdletServer) {
 	s.RegisterService(&_Etcdlet_serviceDesc, srv)
 }
 
-func _Etcdlet_Bootstrap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BootstrapSpec)
+func _Etcdlet_AddMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddDetails)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EtcdletServer).Bootstrap(ctx, in)
+		return srv.(EtcdletServer).AddMember(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/etcdlet.etcdlet/Bootstrap",
+		FullMethod: "/etcdlet.etcdlet/AddMember",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EtcdletServer).Bootstrap(ctx, req.(*BootstrapSpec))
+		return srv.(EtcdletServer).AddMember(ctx, req.(*AddDetails))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Etcdlet_Reconfigure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Reconfigure)
+func _Etcdlet_RemoveMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveDetails)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EtcdletServer).Reconfigure(ctx, in)
+		return srv.(EtcdletServer).RemoveMember(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/etcdlet.etcdlet/Reconfigure",
+		FullMethod: "/etcdlet.etcdlet/RemoveMember",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EtcdletServer).Reconfigure(ctx, req.(*Reconfigure))
+		return srv.(EtcdletServer).RemoveMember(ctx, req.(*RemoveDetails))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -332,42 +300,40 @@ var _Etcdlet_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*EtcdletServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "bootstrap",
-			Handler:    _Etcdlet_Bootstrap_Handler,
+			MethodName: "addMember",
+			Handler:    _Etcdlet_AddMember_Handler,
 		},
 		{
-			MethodName: "reconfigure",
-			Handler:    _Etcdlet_Reconfigure_Handler,
+			MethodName: "removeMember",
+			Handler:    _Etcdlet_RemoveMember_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "etcdlet.proto",
 }
 
-func init() { proto.RegisterFile("etcdlet.proto", fileDescriptor_etcdlet_32257f32c8f9ba61) }
+func init() { proto.RegisterFile("etcdlet.proto", fileDescriptor_etcdlet_205acc584ca6bbfb) }
 
-var fileDescriptor_etcdlet_32257f32c8f9ba61 = []byte{
-	// 344 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0xcb, 0x4e, 0xf3, 0x30,
-	0x10, 0x85, 0xff, 0x5e, 0xfe, 0x5e, 0xa6, 0x14, 0xc1, 0x80, 0x2a, 0x8b, 0x55, 0x95, 0x05, 0x42,
-	0x2c, 0x2a, 0x04, 0x9b, 0x8a, 0x1d, 0x74, 0x8f, 0x50, 0x5b, 0x1e, 0xc0, 0x4d, 0x06, 0x64, 0x11,
-	0xec, 0xc8, 0x9e, 0x22, 0xb1, 0xe0, 0x09, 0x78, 0x0e, 0xde, 0x13, 0xc5, 0x49, 0xaa, 0x98, 0x86,
-	0x5d, 0xe7, 0x9b, 0x73, 0xc6, 0xd3, 0xc9, 0x81, 0x31, 0x71, 0x9c, 0xa4, 0xc4, 0xb3, 0xcc, 0x1a,
-	0x36, 0xd8, 0x2f, 0xcb, 0xe8, 0xab, 0x03, 0xe3, 0x7b, 0x63, 0xd8, 0xb1, 0x95, 0xd9, 0x2a, 0xa3,
-	0x18, 0x11, 0xba, 0x5a, 0xbe, 0x91, 0x68, 0x4d, 0x5b, 0x17, 0xc3, 0xa5, 0xff, 0x8d, 0xb7, 0x20,
-	0x94, 0x56, 0xac, 0x64, 0x7a, 0x97, 0xbc, 0x93, 0x65, 0xe5, 0xe8, 0x91, 0xc8, 0x3e, 0xd9, 0xd4,
-	0x89, 0xb6, 0xd7, 0xfd, 0xd9, 0xc7, 0x73, 0x38, 0x4c, 0x95, 0x63, 0xd2, 0x3b, 0x47, 0xc7, 0x3b,
-	0x7e, 0x51, 0xbc, 0x84, 0xa3, 0x82, 0x2c, 0x52, 0x45, 0x9a, 0xbd, 0xb2, 0xeb, 0x95, 0x7b, 0x1c,
-	0xaf, 0xe0, 0x44, 0x56, 0x0f, 0xd5, 0xe4, 0xff, 0xbd, 0xbc, 0xa9, 0x95, 0x3b, 0xca, 0x0d, 0x17,
-	0xe9, 0xd6, 0x31, 0xd9, 0xb5, 0x79, 0x25, 0x2d, 0x7a, 0x85, 0xa3, 0xa1, 0x95, 0xef, 0x1d, 0x62,
-	0xd1, 0x2f, 0xf6, 0x0e, 0xe9, 0xfe, 0xe4, 0x15, 0x4b, 0x26, 0x31, 0x68, 0x9a, 0xec, 0x5b, 0x28,
-	0xa0, 0x2f, 0x93, 0xc4, 0x92, 0x73, 0x62, 0xe8, 0x55, 0x55, 0x19, 0x7d, 0xb7, 0x60, 0xb4, 0xa4,
-	0xd8, 0xe8, 0x67, 0xf5, 0xb2, 0xb5, 0xd4, 0xf8, 0x2d, 0x6a, 0xee, 0x76, 0xe0, 0xc6, 0x29, 0x8c,
-	0xe2, 0xe2, 0x9d, 0x87, 0xdc, 0x54, 0x9c, 0xb9, 0x8e, 0x30, 0x82, 0x83, 0xb8, 0xfe, 0xf7, 0x8b,
-	0xfb, 0x06, 0x2c, 0xd7, 0x98, 0x2c, 0xbf, 0x9f, 0xd1, 0xeb, 0x8f, 0x8c, 0xca, 0xa3, 0x06, 0x2c,
-	0x8a, 0x60, 0xb0, 0x24, 0x97, 0x19, 0xed, 0x08, 0x27, 0xd0, 0x73, 0x2c, 0x79, 0xeb, 0xca, 0x2d,
-	0xcb, 0xea, 0xfa, 0x13, 0xaa, 0x90, 0xe1, 0x1c, 0x86, 0x9b, 0x2a, 0x63, 0x38, 0x99, 0x55, 0x51,
-	0x0c, 0x72, 0x77, 0x76, 0xbc, 0xe3, 0xd5, 0xe8, 0xe8, 0x1f, 0xce, 0x61, 0x64, 0x6b, 0xf7, 0x38,
-	0xad, 0x69, 0x76, 0xb4, 0xd1, 0xb9, 0xe9, 0xf9, 0xa0, 0xdf, 0xfc, 0x04, 0x00, 0x00, 0xff, 0xff,
-	0x11, 0x79, 0xa1, 0xf6, 0xf9, 0x02, 0x00, 0x00,
+var fileDescriptor_etcdlet_205acc584ca6bbfb = []byte{
+	// 307 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x52, 0x4b, 0x4b, 0x03, 0x31,
+	0x10, 0xb6, 0x0f, 0xfb, 0x18, 0x6c, 0xd1, 0x29, 0x94, 0xe0, 0x45, 0xd9, 0x83, 0x88, 0x87, 0x22,
+	0x8a, 0x17, 0x3d, 0x95, 0xf6, 0xd2, 0x83, 0x20, 0xab, 0xfe, 0x80, 0xd4, 0xcc, 0x21, 0x98, 0xcd,
+	0x96, 0x64, 0xda, 0x9b, 0x77, 0x7f, 0xb6, 0x34, 0xbb, 0xa9, 0x5b, 0xbb, 0xde, 0x32, 0xdf, 0x63,
+	0xf2, 0xc1, 0x37, 0x30, 0x20, 0xfe, 0x50, 0x86, 0x78, 0xb2, 0x72, 0x39, 0xe7, 0xd8, 0x2d, 0xc7,
+	0xe4, 0xbb, 0x05, 0x30, 0x55, 0x6a, 0x4e, 0x2c, 0xb5, 0xf1, 0x88, 0xd0, 0xb6, 0x32, 0x23, 0xd1,
+	0xb8, 0x6c, 0x5c, 0xf7, 0xd3, 0xf0, 0xc6, 0x47, 0x10, 0xda, 0x6a, 0xd6, 0xd2, 0x4c, 0xd5, 0x86,
+	0x1c, 0x6b, 0x4f, 0x2f, 0x44, 0xee, 0xdd, 0x19, 0x2f, 0x9a, 0x41, 0xf7, 0x2f, 0x8f, 0x57, 0x30,
+	0x34, 0xda, 0x33, 0xd9, 0x9d, 0xa3, 0x15, 0x1c, 0x7f, 0x50, 0xbc, 0x81, 0xd3, 0x02, 0x99, 0x19,
+	0x4d, 0x96, 0x83, 0xb2, 0x1d, 0x94, 0x07, 0x38, 0xde, 0xc2, 0x48, 0xc6, 0x8f, 0x2a, 0xf2, 0xe3,
+	0x20, 0xaf, 0xa3, 0xb6, 0x8e, 0x32, 0xe1, 0xcc, 0xac, 0x3d, 0x93, 0x7b, 0xcb, 0x3f, 0xc9, 0x8a,
+	0x4e, 0xe1, 0xa8, 0xa1, 0xb6, 0xb9, 0xf7, 0x61, 0xd1, 0x2d, 0x72, 0xef, 0xa3, 0x87, 0x9b, 0x5f,
+	0x59, 0x32, 0x89, 0x5e, 0xdd, 0xe6, 0x40, 0xa1, 0x80, 0xae, 0x54, 0xca, 0x91, 0xf7, 0xa2, 0x1f,
+	0x54, 0x71, 0x4c, 0x2e, 0x60, 0x90, 0x52, 0x96, 0x6f, 0x28, 0x96, 0x31, 0x84, 0xe6, 0x62, 0x1e,
+	0xaa, 0x68, 0xa7, 0xcd, 0xc5, 0x3c, 0x49, 0xa0, 0x97, 0x92, 0x5f, 0xe5, 0xd6, 0x13, 0x8e, 0xa1,
+	0xe3, 0x59, 0xf2, 0xda, 0x97, 0x55, 0x95, 0xd3, 0xdd, 0x17, 0xc4, 0x6a, 0xf1, 0x01, 0xfa, 0x52,
+	0xa9, 0x67, 0xca, 0x96, 0xe4, 0x70, 0x34, 0x89, 0x07, 0xf0, 0xdb, 0xf6, 0xf9, 0xd9, 0x0e, 0x8c,
+	0x7b, 0x93, 0x23, 0x7c, 0x82, 0x13, 0x17, 0x62, 0x94, 0xce, 0x71, 0x45, 0x54, 0x49, 0x57, 0x6b,
+	0x5e, 0x76, 0xc2, 0x79, 0xdd, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff, 0x75, 0xf9, 0x06, 0xcf, 0x6f,
+	0x02, 0x00, 0x00,
 }

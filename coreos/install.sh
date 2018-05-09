@@ -5,7 +5,6 @@ Description=Ectdlet
 After=docker.service
 
 [Service]
-EnvironmentFile=/etc/network
 ExecStart=/usr/bin/docker run --net=host -v /data/etcd:/var/etcd/data  -v /tmp/inventory:/tmp/inventory -v /var/run/docker.sock:/var/run/docker.sock --name etcdlet etcdlet /service
 ExecStop=/usr/bin/docker stop etcdlet
 ExecStopPost=/usr/bin/docker rm etcdlet
@@ -16,6 +15,6 @@ EOS
 mkdir -p /tmp/inventory
 docker load  < /home/core/share/etcdlet.tar
 
-systemctl system-reload
+systemctl dameon-reload
 systemctl enable etcdlet.service
 systemctl restart etcdlet.service
